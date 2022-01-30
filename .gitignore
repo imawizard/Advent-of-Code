@@ -1,0 +1,8 @@
+*.*
+main
+target
+!*.go
+!*.rs
+!*.clj
+!.gitignore
+!Readme.md
