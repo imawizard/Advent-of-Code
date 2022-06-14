@@ -27,13 +27,7 @@ func PartB(input []int) int {
 		windows = append(windows, window)
 	}
 
-	var n int
-	for i := range windows[:len(windows)-1] {
-		if windows[i] < windows[i+1] {
-			n++
-		}
-	}
-	return n
+	return PartA(windows)
 }
 
 func main() {

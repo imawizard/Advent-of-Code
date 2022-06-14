@@ -10,9 +10,7 @@
   (->> input
        (partition 3 1)
        (map #(apply + %))
-       (partition 2 1)
-       (filter #(apply < %))
-       (count)))
+       (part-a)))
 
 (let [measurements
       (->> (slurp "input")

@@ -9,67 +9,65 @@ import (
 	"strings"
 )
 
-func PartA(input []string) (int, int) {
-	pos, depth := 0, 0
+func PartA(input []Line) (int, int) {
+	horz, depth := 0, 0
 
-	for _, cmd := range input {
-		f := strings.Fields(cmd)
-		if len(f) < 2 {
-			continue
-		}
-
-		dir := strings.ToLower(f[0])
-		units, _ := strconv.Atoi(f[1])
-		switch dir {
+	for _, v := range input {
+		switch v.dir {
 		case "forward":
-			pos += units
+			horz += v.x
 		case "up":
-			depth -= units
+			depth -= v.x
 		case "down":
-			depth += units
+			depth += v.x
 		}
 	}
 
-	return pos, depth
+	return horz, depth
 }
 
-func PartB(input []string) (int, int) {
-	pos, depth, aim := 0, 0, 0
+func PartB(input []Line) (int, int) {
+	horz, depth, aim := 0, 0, 0
 
-	for _, cmd := range input {
-		f := strings.Fields(cmd)
-		if len(f) < 2 {
-			continue
-		}
-
-		dir := strings.ToLower(f[0])
-		units, _ := strconv.Atoi(f[1])
-		switch dir {
+	for _, v := range input {
+		switch v.dir {
 		case "forward":
-			pos += units
-			depth += aim * units
+			horz += v.x
+			depth += aim * v.x
 		case "up":
-			aim -= units
+			aim -= v.x
 		case "down":
-			aim += units
+			aim += v.x
 		}
 	}
 
-	return pos, depth
+	return horz, depth
+}
+
+type Line struct {
+	dir string
+	x   int
 }
 
 func main() {
 	input, _ := os.ReadFile("input")
 	s := bufio.NewScanner(bytes.NewReader(input))
 
-	var commands []string
+	var lines []Line
 	for s.Scan() {
-		commands = append(commands, s.Text())
+		f := strings.Fields(s.Text())
+		if len(f) < 2 {
+			continue
+		}
+
+		dir := strings.ToLower(f[0])
+		x, _ := strconv.Atoi(f[1])
+		lines = append(lines, Line{dir, x})
 	}
 
-	apos, adepth := PartA(commands)
-	fmt.Println("a:", apos*adepth)
+	horz, depth := PartA(lines)
+	fmt.Println("a:", horz*depth)
 
-	bpos, bdepth := PartB(commands)
-	fmt.Println("b:", bpos*bdepth)
+	horz, depth = PartB(lines)
+	fmt.Println("b:", horz*depth)
 }

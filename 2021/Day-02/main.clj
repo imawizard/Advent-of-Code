@@ -2,33 +2,33 @@
 
 (defn part-a [input]
   (reduce
-   (fn [[pos depth] [dir units]]
+   (fn [[horz depth] [dir x]]
      (case dir
-           "forward" [(+ pos units) depth]
-           "up"      [pos (- depth units)]
-           "down"    [pos (+ depth units)]))
+           "forward" [(+ horz x) depth]
+           "up"      [horz (- depth x)]
+           "down"    [horz (+ depth x)]))
    [0 0] input))
 
 (defn part-b [input]
   (reduce
-   (fn [[pos depth aim] [dir units]]
+   (fn [[horz depth aim] [dir x]]
      (case dir
-           "forward" [(+ pos units) (+ depth (* aim units)) aim]
-           "up"      [pos depth (- aim units)]
-           "down"    [pos depth (+ aim units)]))
+           "forward" [(+ horz x) (+ depth (* aim x)) aim]
+           "up"      [horz depth (- aim x)]
+           "down"    [horz depth (+ aim x)]))
    [0 0 0] input))
 
 (let [commands
       (->> (slurp "input")
            (clojure.string/split-lines)
            (map #(clojure.string/split % #"\s+"))
-           (map (fn [[dir units]] [dir (Integer. units)])))]
+           (map (fn [[dir x]] [dir (Integer. x)])))]
 
   (println "a:"
-           (let [[pos depth]
+           (let [[horz depth]
                  (part-a commands)]
-             (* pos depth)))
+             (* horz depth)))
   (println "b:"
-           (let [[pos depth]
+           (let [[horz depth]
                  (part-b commands)]
-             (* pos depth))))
+             (* horz depth))))
