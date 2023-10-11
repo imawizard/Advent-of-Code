@@ -26,7 +26,7 @@ fn main() {
         .filter_map(|l| l.split_once(","))
         .map(|(f, s)| {
             [f, s]
-                .iter()
+                .into_iter()
                 .map(|v| v.split_once("-").unwrap())
                 .map(|(s, e)| {
                     (s.parse::<i32>().unwrap(), e.parse::<i32>().unwrap())

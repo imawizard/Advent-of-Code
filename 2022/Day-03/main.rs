@@ -8,7 +8,7 @@ fn part_a(input: &[Vec<u8>]) -> u32 {
         .map(|l| l.split_at(l.len() / 2))
         .map(|(f, s)| {
             [f, s]
-                .iter()
+                .into_iter()
                 .map(|a| a.into_iter().collect::<HashSet<_>>())
                 .reduce(|acc, s| {
                     acc.intersection(&s).cloned().collect::<HashSet<_>>()

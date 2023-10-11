@@ -4,16 +4,17 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"math/bits"
 	"os"
 	"strings"
 )
 
-func PartA(input []int, bitcnt int, length int) (int, int) {
+func PartA(input []int, digits int, length int) (int, int) {
 	ratios := make(map[int]int)
 
 	for _, number := range input {
 		for i := 0; i < length; i++ {
-			bit := number >> (bitcnt - 1) & 1
+			bit := number >> (digits - 1) & 1
 			r := ratios[i]
 			ratios[i] = r + (bit*2 - 1)
 			number <<= 1
@@ -38,15 +39,15 @@ func PartA(input []int, bitcnt int, length int) (int, int) {
 	return gamma, epsilon
 }
 
-func PartB(input []int, bitcnt int) (int, int) {
+func PartB(input []int, digits int) (int, int) {
 	var left []int
 
 	oxygenGeneratorRating := 0
 	left = append(left, input...)
-	for i := 0; i < bitcnt; i++ {
-		gamma, _ := PartA(left, bitcnt-i, 1)
+	for i := 0; i < digits; i++ {
+		gamma, _ := PartA(left, digits-i, 1)
 		for j := 0; j < len(left); j++ {
-			if left[j]>>(bitcnt-i-1)&1 != gamma {
+			if left[j]>>(digits-i-1)&1 != gamma {
 				left = append(left[:j], left[j+1:]...)
 				j--
 			}
@@ -59,10 +60,10 @@ func PartB(input []int, bitcnt int) (int, int) {
 
 	co2ScrubberRating := 0
 	left = append(left, input...)
-	for i := 0; i < bitcnt; i++ {
-		_, epsilon := PartA(left, bitcnt-i, 1)
+	for i := 0; i < digits; i++ {
+		_, epsilon := PartA(left, digits-i, 1)
 		for j := 0; j < len(left); j++ {
-			if left[j]>>(bitcnt-i-1)&1 != epsilon {
+			if left[j]>>(digits-i-1)&1 != epsilon {
 				left = append(left[:j], left[j+1:]...)
 				j--
 			}
@@ -81,20 +82,20 @@ func main() {
 	s := bufio.NewScanner(bytes.NewReader(input))
 
 	var numbers []int
-	bitCount := 0
+	var digits int
 	for s.Scan() {
 		r := strings.NewReader(s.Text())
 		var value int
 		fmt.Fscanf(r, "%b", &value)
 		numbers = append(numbers, value)
-		if len(s.Text()) > bitCount {
-			bitCount = len(s.Text())
+		if bits.Len(uint(value)) > digits {
+			digits = bits.Len(uint(value))
 		}
 	}
 
-	gamma, epsilon := PartA(numbers, bitCount, bitCount)
+	gamma, epsilon := PartA(numbers, digits, digits)
 	fmt.Println("a:", gamma*epsilon)
 
-	oxygen, co2 := PartB(numbers, bitCount)
+	oxygen, co2 := PartB(numbers, digits)
 	fmt.Println("b:", oxygen*co2)
 }
