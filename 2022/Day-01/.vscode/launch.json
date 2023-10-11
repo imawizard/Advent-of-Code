@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "rt_lldb",
+            "name": "main",
+            "request": "launch",
+            "program": "target/debug/main.exe"
+        }
+    ]
+}
