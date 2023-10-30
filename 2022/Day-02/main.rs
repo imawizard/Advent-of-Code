@@ -7,7 +7,7 @@ fn part_a(input: &[(i32, i32)]) -> i32 {
             } else if a < b && a - b != -2 || a - b == 2 {
                 b + 6
             } else {
-                b + 0
+                b
             }
         })
         .sum()
@@ -31,18 +31,40 @@ fn part_b(input: &[(i32, i32)]) -> i32 {
     )
 }
 
-fn main() {
-    let input = include_str!("input")
-        .lines()
-        .filter_map(|l| l.split_once(" "))
+fn parse(s: &str) -> Vec<(i32, i32)> {
+    s.lines()
+        .filter_map(|l| l.split_once(' '))
         .map(|(a, b)| {
             (
                 (a.as_bytes()[0] - b'A' + 1) as i32,
                 (b.as_bytes()[0] - b'X' + 1) as i32,
             )
         })
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
 
-    println!("a: {:?}", part_a(&input));
-    println!("b: {:?}", part_b(&input));
+fn main() {
+    let input = parse(include_str!("input"));
+
+    println!("a: {}", part_a(&input));
+    println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+A Y
+B X
+C Z
+",
+        );
+
+        assert_eq!(part_a(&input), 15);
+        assert_eq!(part_b(&input), 12);
+    }
 }

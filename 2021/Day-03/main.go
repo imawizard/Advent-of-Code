@@ -2,9 +2,9 @@ package main
 
 import (
 	"bufio"
-	"bytes"
+	_ "embed"
 	"fmt"
-	"os"
+	"math/bits"
 	"strings"
 )
 
@@ -76,25 +76,31 @@ func PartB(input []int, bitcnt int) (int, int) {
 	return oxygenGeneratorRating, co2ScrubberRating
 }
 
-func main() {
-	input, _ := os.ReadFile("input")
-	s := bufio.NewScanner(bytes.NewReader(input))
-
+func Parse(s string) ([]int, int) {
 	var numbers []int
-	bitCount := 0
-	for s.Scan() {
-		r := strings.NewReader(s.Text())
+	var bitcnt int
+	sc := bufio.NewScanner(strings.NewReader(s))
+	for sc.Scan() {
+		r := strings.NewReader(sc.Text())
 		var value int
 		fmt.Fscanf(r, "%b", &value)
 		numbers = append(numbers, value)
-		if len(s.Text()) > bitCount {
-			bitCount = len(s.Text())
+		if bits.Len(uint(value)) > bitcnt {
+			bitcnt = bits.Len(uint(value))
 		}
 	}
+	return numbers, bitcnt
+}
 
-	gamma, epsilon := PartA(numbers, bitCount, bitCount)
-	fmt.Println("a:", gamma*epsilon)
+//go:embed input
+var inputText string
 
-	oxygen, co2 := PartB(numbers, bitCount)
-	fmt.Println("b:", oxygen*co2)
+func main() {
+	numbers, bitcnt := Parse(inputText)
+
+	gamma, epsilon := PartA(numbers, bitcnt, bitcnt)
+	fmt.Printf("a: %d\n", gamma*epsilon)
+
+	oxygen, co2 := PartB(numbers, bitcnt)
+	fmt.Printf("b: %d\n", oxygen*co2)
 }

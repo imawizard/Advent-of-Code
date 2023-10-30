@@ -3,9 +3,4 @@
 .clj-kondo
 .lsp
 
-Cargo.toml
-Cargo.lock
 target
-
-go.mod
-go.sum

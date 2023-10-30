@@ -13,17 +13,46 @@ where
     part_a(
         &input
             .array_windows::<3>()
-            .map(|w| w.into_iter().sum::<T>())
+            .map(|w| w.iter().sum::<T>())
             .collect::<Vec<_>>(),
     )
 }
 
-pub fn main() {
-    let measurements = include_str!("input")
-        .lines()
+fn parse(s: &str) -> Vec<i32> {
+    s.lines()
         .filter_map(|line| line.parse::<i32>().ok())
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
 
-    println!("a: {}", part_a(&measurements));
-    println!("b: {}", part_b(&measurements));
+fn main() {
+    let input = parse(include_str!("input"));
+
+    println!("a: {}", part_a(&input));
+    println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+",
+        );
+
+        assert_eq!(part_a(&input), 7);
+        assert_eq!(part_b(&input), 5);
+    }
 }

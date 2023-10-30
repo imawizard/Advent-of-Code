@@ -20,14 +20,13 @@ fn part_b(input: &[(RangeInclusive<i32>, RangeInclusive<i32>)]) -> usize {
         .count()
 }
 
-fn main() {
-    let input = include_str!("input")
-        .lines()
-        .filter_map(|l| l.split_once(","))
+fn parse(s: &str) -> Vec<(RangeInclusive<i32>, RangeInclusive<i32>)> {
+    s.lines()
+        .filter_map(|l| l.split_once(','))
         .map(|(f, s)| {
             [f, s]
                 .iter()
-                .map(|v| v.split_once("-").unwrap())
+                .map(|v| v.split_once('-').unwrap())
                 .map(|(s, e)| {
                     (s.parse::<i32>().unwrap(), e.parse::<i32>().unwrap())
                 })
@@ -35,8 +34,34 @@ fn main() {
                 .collect::<Vec<_>>()
         })
         .map(|v| (v[0].clone(), v[1].clone()))
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
+
+fn main() {
+    let input = parse(include_str!("input"));
 
     println!("a: {}", part_a(&input));
     println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8
+",
+        );
+
+        assert_eq!(part_a(&input), 2);
+        assert_eq!(part_b(&input), 4);
+    }
 }

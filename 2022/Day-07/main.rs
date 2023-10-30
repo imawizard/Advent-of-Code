@@ -1,7 +1,5 @@
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-};
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 
 fn part_a(input: &[Entry]) -> usize {
     collect_sizes(input.iter())
@@ -26,7 +24,9 @@ fn part_b(input: &[Entry]) -> usize {
         .unwrap()
 }
 
-fn collect_sizes<'a>(entries: impl Iterator<Item = &'a Entry<'a>>) -> HashMap<PathBuf, usize> {
+fn collect_sizes<'a>(
+    entries: impl Iterator<Item = &'a Entry<'a>>,
+) -> HashMap<PathBuf, usize> {
     let mut children = HashMap::new();
     let mut cwd = PathBuf::from("/");
 
@@ -64,8 +64,9 @@ fn collect_sizes<'a>(entries: impl Iterator<Item = &'a Entry<'a>>) -> HashMap<Pa
         let size = children[&path]
             .iter()
             .map(|(name, size)| {
-                size.parse::<usize>()
-                    .unwrap_or_else(|_| fill_sizes(acc, path.join(name), children))
+                size.parse::<usize>().unwrap_or_else(|_| {
+                    fill_sizes(acc, path.join(name), children)
+                })
             })
             .sum();
         *acc.entry(path).or_insert(size)
@@ -97,43 +98,45 @@ fn parse(s: &str) -> Vec<Entry> {
 fn main() {
     let input = parse(include_str!("input"));
 
-    println!("a: {:?}", part_a(&input));
-    println!("b: {:?}", part_b(&input));
+    println!("a: {}", part_a(&input));
+    println!("b: {}", part_b(&input));
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
+    use super::*;
 
     #[test]
     fn example() {
         let input = parse(
-            "$ cd /\n\
-             $ ls\n\
-             dir a\n\
-             14848514 b.txt\n\
-             8504156 c.dat\n\
-             dir d\n\
-             $ cd a\n\
-             $ ls\n\
-             dir e\n\
-             29116 f\n\
-             2557 g\n\
-             62596 h.lst\n\
-             $ cd e\n\
-             $ ls\n\
-             584 i\n\
-             $ cd ..\n\
-             $ cd ..\n\
-             $ cd d\n\
-             $ ls\n\
-             4060174 j\n\
-             8033020 d.log\n\
-             5626152 d.ext\n\
-             7214296 k",
+            "
+$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k
+",
         );
 
-        assert_eq!(part_a(&input), 95437,);
-        assert_eq!(part_b(&input), 24933642,);
+        assert_eq!(part_a(&input), 95437);
+        assert_eq!(part_b(&input), 24933642);
     }
 }

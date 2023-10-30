@@ -3,7 +3,7 @@ fn part_a(input: &[i32]) -> i32 {
 }
 
 fn part_b(input: &[i32]) -> i32 {
-    input.iter().map(|&mass| mass).flat_map(calc_fuel).sum()
+    input.iter().copied().flat_map(calc_fuel).sum()
 }
 
 fn calc_fuel(mass: i32) -> Vec<i32> {
@@ -25,6 +25,24 @@ pub fn main() {
         .filter_map(|line| line.parse::<i32>().ok())
         .collect::<Vec<_>>();
 
-    println!("a: {:?}", part_a(&modules));
-    println!("b: {:?}", part_b(&modules));
+    println!("a: {}", part_a(&modules));
+    println!("b: {}", part_b(&modules));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        assert_eq!(part_a(&[12]), 2);
+        assert_eq!(part_a(&[14]), 2);
+        assert_eq!(part_a(&[1969]), 654);
+        assert_eq!(part_a(&[100756]), 33583);
+
+        assert_eq!(part_b(&[12]), 2);
+        assert_eq!(part_b(&[14]), 2);
+        assert_eq!(part_b(&[1969]), 966);
+        assert_eq!(part_b(&[100756]), 50346);
+    }
 }

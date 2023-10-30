@@ -29,13 +29,29 @@ fn part_b(input: &[u8]) -> usize {
         .sum()
 }
 
-fn main() {
-    let input = include_str!("input")
-        .trim()
-        .split(",")
+fn parse(s: &str) -> Vec<u8> {
+    s.trim()
+        .split(',')
         .filter_map(|v| v.parse::<u8>().ok())
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
+
+fn main() {
+    let input = parse(include_str!("input"));
 
     println!("a: {}", part_a(&input));
     println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse("3,4,3,1,2");
+
+        assert_eq!(part_a(&input), 5934);
+        assert_eq!(part_b(&input), 26984457539);
+    }
 }

@@ -2,10 +2,10 @@ package main
 
 import (
 	"bufio"
-	"bytes"
+	_ "embed"
 	"fmt"
-	"os"
 	"strconv"
+	"strings"
 )
 
 func PartA(input []int) int {
@@ -30,17 +30,23 @@ func PartB(input []int) int {
 	return PartA(windows)
 }
 
-func main() {
-	input, _ := os.ReadFile("input")
-	s := bufio.NewScanner(bytes.NewReader(input))
-
-	var measurements []int
-	for s.Scan() {
-		if m, err := strconv.Atoi(s.Text()); err == nil {
-			measurements = append(measurements, m)
+func Parse(s string) []int {
+	var res []int
+	sc := bufio.NewScanner(strings.NewReader(s))
+	for sc.Scan() {
+		if m, err := strconv.Atoi(sc.Text()); err == nil {
+			res = append(res, m)
 		}
 	}
+	return res
+}
 
-	fmt.Println("a:", PartA(measurements))
-	fmt.Println("b:", PartB(measurements))
+//go:embed input
+var inputText string
+
+func main() {
+	input := Parse(inputText)
+
+	fmt.Printf("a: %d\n", PartA(input))
+	fmt.Printf("b: %d\n", PartB(input))
 }

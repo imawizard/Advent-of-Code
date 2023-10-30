@@ -1,4 +1,5 @@
 #![feature(array_chunks)]
+#![allow(clippy::type_complexity)]
 
 use std::collections::HashMap;
 use std::iter::{repeat, zip};
@@ -56,12 +57,11 @@ fn part_b(input: &[((i32, i32), (i32, i32))]) -> usize {
     m.into_values().filter(|&v| v >= 2).count()
 }
 
-fn main() {
-    let input = include_str!("input")
-        .lines()
+fn parse(s: &str) -> Vec<((i32, i32), (i32, i32))> {
+    s.lines()
         .filter_map(|l| l.split_once(" -> "))
         .flat_map(|(p1, p2)| [p1, p2])
-        .map(|p| p.split_once(",").unwrap())
+        .map(|p| p.split_once(',').unwrap())
         .flat_map(|(x, y)| [x, y])
         .map(|v| v.parse::<i32>().unwrap())
         .collect::<Vec<_>>()
@@ -70,8 +70,38 @@ fn main() {
         .collect::<Vec<_>>()
         .array_chunks()
         .map(|&[p1, p2]| (p1, p2))
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
+
+fn main() {
+    let input = parse(include_str!("input"));
 
     println!("a: {}", part_a(&input));
     println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+0,9 -> 5,9
+8,0 -> 0,8
+9,4 -> 3,4
+2,2 -> 2,1
+7,0 -> 7,4
+6,4 -> 2,0
+0,9 -> 2,9
+3,4 -> 1,4
+0,0 -> 8,8
+5,5 -> 8,2
+",
+        );
+
+        assert_eq!(part_a(&input), 5);
+        assert_eq!(part_b(&input), 12);
+    }
 }

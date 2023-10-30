@@ -9,7 +9,7 @@ fn part_a(input: &[Vec<u8>]) -> u32 {
         .map(|(f, s)| {
             [f, s]
                 .iter()
-                .map(|a| a.into_iter().collect::<HashSet<_>>())
+                .map(|a| a.iter().collect::<HashSet<_>>())
                 .reduce(|acc, s| {
                     acc.intersection(&s).cloned().collect::<HashSet<_>>()
                 })
@@ -23,8 +23,8 @@ fn part_b(input: &[Vec<u8>]) -> u32 {
     input
         .array_chunks::<3>()
         .map(|x| {
-            x.into_iter()
-                .map(|a| a.into_iter().collect::<HashSet<_>>())
+            x.iter()
+                .map(|a| a.iter().collect::<HashSet<_>>())
                 .reduce(|acc, s| {
                     acc.intersection(&s).cloned().collect::<HashSet<_>>()
                 })
@@ -34,11 +34,10 @@ fn part_b(input: &[Vec<u8>]) -> u32 {
         .sum::<u32>()
 }
 
-fn main() {
-    let input = include_str!("input")
-        .lines()
+fn parse(s: &str) -> Vec<Vec<u8>> {
+    s.lines()
         .map(|l| l.trim())
-        .filter(|l| l.len() > 0)
+        .filter(|l| !l.is_empty())
         .map(|l| {
             l.chars()
                 .map(|c| match c.is_lowercase() {
@@ -47,8 +46,34 @@ fn main() {
                 })
                 .collect::<Vec<_>>()
         })
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
 
-    println!("a: {:?}", part_a(&input));
-    println!("b: {:?}", part_b(&input));
+fn main() {
+    let input = parse(include_str!("input"));
+
+    println!("a: {}", part_a(&input));
+    println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw
+",
+        );
+
+        assert_eq!(part_a(&input), 157);
+        assert_eq!(part_b(&input), 70);
+    }
 }

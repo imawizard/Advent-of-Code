@@ -2,12 +2,13 @@ package main
 
 import (
 	"bufio"
+	_ "embed"
 	"fmt"
-	"os"
 	"strconv"
+	"strings"
 )
 
-func partA(vals []int) int {
+func PartA(vals []int) int {
 	for i := 0; i < len(vals)-1; i++ {
 		for j := 1; j < len(vals); j++ {
 			if vals[i]+vals[j] == 2020 {
@@ -18,7 +19,7 @@ func partA(vals []int) int {
 	return 0
 }
 
-func partB(vals []int) int {
+func PartB(vals []int) int {
 	for i := 0; i < len(vals)-2; i++ {
 		for j := 1; j < len(vals)-1; j++ {
 			for k := 2; k < len(vals); k++ {
@@ -31,16 +32,22 @@ func partB(vals []int) int {
 	return 0
 }
 
-func main() {
-	f, _ := os.Open("input")
-	defer f.Close()
-	s := bufio.NewScanner(f)
-	var vals []int
-	for s.Scan() {
-		val, _ := strconv.ParseInt(s.Text(), 10, 0)
-		vals = append(vals, int(val))
+func Parse(s string) []int {
+	var res []int
+	sc := bufio.NewScanner(strings.NewReader(s))
+	for sc.Scan() {
+		val, _ := strconv.ParseInt(sc.Text(), 10, 0)
+		res = append(res, int(val))
 	}
+	return res
+}
 
-	fmt.Printf("a: %d\n", partA(vals))
-	fmt.Printf("b: %d\n", partB(vals))
+//go:embed input
+var inputText string
+
+func main() {
+	input := parse(inputText)
+
+	fmt.Printf("a: %d\n", PartA(input))
+	fmt.Printf("b: %d\n", PartB(input))
 }

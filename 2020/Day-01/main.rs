@@ -22,12 +22,37 @@ fn part_b(input: &[i32]) -> i32 {
     0
 }
 
-fn main() {
-    let vals = include_str!("input")
-        .lines()
+fn parse(s: &str) -> Vec<i32> {
+    s.lines()
         .filter_map(|v| v.parse::<i32>().ok())
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+}
 
-    println!("a: {}", part_a(&vals));
-    println!("b: {}", part_b(&vals));
+fn main() {
+    let input = parse(include_str!("input"));
+
+    println!("a: {}", part_a(&input));
+    println!("b: {}", part_b(&input));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example() {
+        let input = parse(
+            "
+1721
+979
+366
+299
+675
+1456
+",
+        );
+
+        assert_eq!(part_a(&input), 514579);
+        assert_eq!(part_b(&input), 241861950);
+    }
 }

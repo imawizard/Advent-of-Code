@@ -2,14 +2,13 @@ package main
 
 import (
 	"bufio"
-	"bytes"
+	_ "embed"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func PartA(input []Line) (int, int) {
+func PartA(input []line) (int, int) {
 	horz, depth := 0, 0
 
 	for _, v := range input {
@@ -26,7 +25,7 @@ func PartA(input []Line) (int, int) {
 	return horz, depth
 }
 
-func PartB(input []Line) (int, int) {
+func PartB(input []line) (int, int) {
 	horz, depth, aim := 0, 0, 0
 
 	for _, v := range input {
@@ -44,30 +43,36 @@ func PartB(input []Line) (int, int) {
 	return horz, depth
 }
 
-type Line struct {
+type line struct {
 	dir string
 	x   int
 }
 
-func main() {
-	input, _ := os.ReadFile("input")
-	s := bufio.NewScanner(bytes.NewReader(input))
-
-	var lines []Line
-	for s.Scan() {
-		f := strings.Fields(s.Text())
+func Parse(s string) []line {
+	var res []line
+	sc := bufio.NewScanner(strings.NewReader(s))
+	for sc.Scan() {
+		f := strings.Fields(sc.Text())
 		if len(f) < 2 {
 			continue
 		}
 
 		dir := strings.ToLower(f[0])
 		x, _ := strconv.Atoi(f[1])
-		lines = append(lines, Line{dir, x})
+		res = append(res, line{dir, x})
 	}
+	return res
+}
 
-	horz, depth := PartA(lines)
-	fmt.Println("a:", horz*depth)
+//go:embed input
+var inputText string
 
-	horz, depth = PartB(lines)
-	fmt.Println("b:", horz*depth)
+func main() {
+	input := Parse(inputText)
+
+	horz, depth := PartA(input)
+	fmt.Printf("a: %d\n", horz*depth)
+
+	horz, depth = PartB(input)
+	fmt.Printf("b: %d\n", horz*depth)
 }

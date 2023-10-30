@@ -82,6 +82,7 @@ mod tests {
 35390
 ",
         );
+
         assert_eq!(part_a(&input), 21);
         assert_eq!(part_b(&input), Some(8));
     }

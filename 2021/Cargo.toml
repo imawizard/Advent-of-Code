@@ -1,0 +1,20 @@
+[package]
+name = "Advent-of-Code-2021"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "day-01"
+path = "Day-01/main.rs"
+[[bin]]
+name = "day-02"
+path = "Day-02/main.rs"
+[[bin]]
+name = "day-03"
+path = "Day-03/main.rs"
+[[bin]]
+name = "day-05"
+path = "Day-05/main.rs"
+[[bin]]
+name = "day-06"
+path = "Day-06/main.rs"
