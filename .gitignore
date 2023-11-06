@@ -4,3 +4,6 @@
 .lsp
 
 target
+
+zig-out
+zig-cache
