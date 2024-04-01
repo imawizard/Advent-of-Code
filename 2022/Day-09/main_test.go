@@ -45,10 +45,10 @@ L 25
 U 20
     `)
 
-	if want, got := 1, day09.PartB(input1); got != want {
+	if want, got := 1, day09.PartB(input1, 10); got != want {
 		t.Errorf("got: %d, want: %d", got, want)
 	}
-	if want, got := 36, day09.PartB(input2); got != want {
+	if want, got := 36, day09.PartB(input2, 10); got != want {
 		t.Errorf("got: %d, want: %d", got, want)
 	}
 }

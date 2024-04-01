@@ -7,22 +7,26 @@ import (
 )
 
 var input = day01.Parse(`
-1721
-979
-366
-299
-675
-1456
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
 `)
 
 func TestPartA(t *testing.T) {
-	if want, got := 514579, day01.PartA(input); got != want {
+	if want, got := 7, day01.PartA(input); got != want {
 		t.Errorf("got: %d, want: %d", got, want)
 	}
 }
 
 func TestPartB(t *testing.T) {
-	if want, got := 241861950, day01.PartB(input); got != want {
+	if want, got := 5, day01.PartB(input); got != want {
 		t.Errorf("got: %d, want: %d", got, want)
 	}
 }

@@ -1,3 +1,3 @@
 module github.com/imawizard/Advent-of-Code/2022
 
-go 1.21.3
+go 1.22
