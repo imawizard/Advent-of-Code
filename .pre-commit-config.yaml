@@ -1,0 +1,10 @@
+repos:
+- repo: .
+  rev: d1f8b46a287614683220d8058cc36003c32937ce
+  hooks:
+  - id: generate-summary
+
+default_install_hook_types:
+- pre-commit
+- pre-merge-commit
+- pre-push
