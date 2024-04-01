@@ -1,0 +1,13 @@
+- id: generate-summary
+  name: generate-summary
+  language: script
+  entry: ./scripts/gen-summary.sh
+  require_serial: true
+  files: ^\d+/
+  types:
+  - text
+  stages:
+  - pre-commit
+  - pre-merge-commit
+  - pre-push
+  - manual
