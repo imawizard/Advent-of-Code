@@ -7,3 +7,9 @@ target
 
 zig-out
 zig-cache
+
+*.beam
+*.ez
+build
+erl_crash.dump
+manifest.toml
