@@ -56,14 +56,12 @@ fn part_b(a: mem.Allocator, input: []Move, comptime length: u32) !u32 {
 
     for (input) |move| {
         for (0..move.steps) |_| {
-            var dir = move.direction;
-
             for (1..points.len) |idx| {
                 var head = &points[idx - 1];
                 var tail = &points[idx];
 
                 if (idx == 1) {
-                    switch (dir) {
+                    switch (move.direction) {
                         .up => head.y += 1,
                         .down => head.y -= 1,
                         .left => head.x -= 1,
@@ -143,7 +141,7 @@ fn print_points(a: mem.Allocator, points: []Point) ![]u8 {
     for (points, 0..) |point, i| {
         const x = @abs(point.x + @as(i32, @intCast(off_x)));
         const y = if (point.y < 0) @abs(point.y) + off_y else off_y - @abs(point.y);
-        var p = &buf[y * width + x];
+        const p = &buf[y * width + x];
         if (p.* == '.' or p.* == 's') {
             if (points.len < 10) {
                 buf[y * width + x] = if (i == 0) 'H' else '0' + @as(u8, @truncate(i));

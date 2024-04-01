@@ -20,7 +20,7 @@ func PartA(input []int) int {
 
 func PartB(input []int) int {
 	var windows []int
-	for i := 0; i < len(input)-len(input)%3; i++ {
+	for i := 0; i < len(input)-2; i++ {
 		window := input[i+0] +
 			input[i+1] +
 			input[i+2]

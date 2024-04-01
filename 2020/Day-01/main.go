@@ -36,6 +36,9 @@ func Parse(s string) []int {
 	var res []int
 	sc := bufio.NewScanner(strings.NewReader(s))
 	for sc.Scan() {
+		if sc.Text() == "" {
+			continue
+		}
 		val, _ := strconv.ParseInt(sc.Text(), 10, 0)
 		res = append(res, int(val))
 	}
@@ -46,7 +49,7 @@ func Parse(s string) []int {
 var inputText string
 
 func main() {
-	input := parse(inputText)
+	input := Parse(inputText)
 
 	fmt.Printf("a: %d\n", PartA(input))
 	fmt.Printf("b: %d\n", PartB(input))
