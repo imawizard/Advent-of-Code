@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  cargo-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        rustup default nightly
+        cargo test
+
+  gleam-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: erlef/setup-beam@v1
+      with:
+        gleam-version: 1
+        rebar3-version: 3
+        otp-version: 26
+    - run: |
+        find . -type d -path "*/gleam/src" -execdir gleam test \;
+
+  go-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        go list -f '{{.Dir}}' -m | xargs -I {} go test {}/...
+
+  zig-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: goto-bus-stop/setup-zig@v2
+    - run: |
+        find . -type f -name "main.zig" -execdir zig test {} \;
